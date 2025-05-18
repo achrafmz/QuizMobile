@@ -10,14 +10,8 @@ import androidx.navigation.NavHostController
 import com.example.quizappg.viewmodel.QuizViewModel
 
 @Composable
-fun MyQuizzesScreen(
-    viewModel: QuizViewModel,
-    navController: NavHostController
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "Mes Quizs")
+fun MyQuizzesScreen(viewModel: QuizViewModel, navController: NavHostController) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Mes Quizs")
     }
 }

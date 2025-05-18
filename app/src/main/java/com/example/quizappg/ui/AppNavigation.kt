@@ -14,20 +14,15 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "login") {
-        composable("login") {
-            LoginScreen(navController)
-        }
-
+        composable("login") { LoginScreen(navController) }
         composable("home") {
             val quizViewModel: QuizViewModel = viewModel()
             HomeScreen(viewModel = quizViewModel, navController = navController)
         }
-
         composable("myquizzes") {
             val quizViewModel: QuizViewModel = viewModel()
             MyQuizzesScreen(viewModel = quizViewModel, navController = navController)
         }
-
         composable("profile") {
             ProfileScreen(navController = navController)
         }

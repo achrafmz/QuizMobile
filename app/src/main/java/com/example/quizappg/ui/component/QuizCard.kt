@@ -1,7 +1,9 @@
 package com.example.quizappg.ui.component
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,16 +22,12 @@ fun QuizCard(
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                // Naviguer vers un écran détaillé (optionnel pour maintenant)
                 // navController.navigate("quiz/${quiz.id}")
             }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = quiz.nom)
-
-            quiz.categorie?.nom?.let {
-                Text(text = "Catégorie : $it")
-            }
+            quiz.categorie?.nom?.let { Text(text = "Catégorie : $it") }
         }
     }
 }

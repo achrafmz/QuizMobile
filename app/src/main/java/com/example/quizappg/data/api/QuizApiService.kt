@@ -1,10 +1,8 @@
 package com.example.quizappg.data.api
 
-import com.example.quizappg.data.model.Category
-import com.example.quizappg.data.model.Quiz
-import com.example.quizappg.data.model.QuizResult
-import retrofit2.http.GET
-import retrofit2.http.Path
+import QuizResult
+import retrofit2.http.*
+import com.example.quizappg.data.model.*
 
 interface QuizApiService {
     @GET("api/quizzes")

@@ -2,11 +2,11 @@ package com.example.quizappg.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.quizappg.data.model.*
-import com.example.quizappg.data.repository.QuizRepository
+import com.example.quizappg.data.model.Quiz
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.example.quizappg.data.repository.QuizRepository
 
 class QuizViewModel : ViewModel() {
     private val repository = QuizRepository()
