@@ -1,33 +1,27 @@
-package com.example.quizappg.ui.component
-
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.example.quizappg.data.model.Quiz
-
 @Composable
-fun QuizCard(
-    quiz: Quiz,
-    navController: NavHostController
-) {
+fun QuizCard(quiz: Quiz, onClick: () -> Unit) {
+    val imageUrl = "data:image/jpeg;base64,${quiz.photo}"
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable {
-                // navController.navigate("quiz/${quiz.id}")
-            }
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = quiz.nom)
-            quiz.categorie?.nom?.let { Text(text = "Catégorie : $it") }
+        Column(modifier = Modifier.padding(12.dp)) {
+            Image(
+                painter = rememberImagePainter(imageUrl),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = quiz.nom, style = MaterialTheme.typography.titleMedium)
+            Text(text = quiz.categorie.nom, style = MaterialTheme.typography.bodySmall)
         }
     }
 }

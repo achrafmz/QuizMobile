@@ -1,4 +1,4 @@
-package com.example.quizappg.data.model
+package com.example.quizapp.data.model
 
 data class Category(
     val id: Int,

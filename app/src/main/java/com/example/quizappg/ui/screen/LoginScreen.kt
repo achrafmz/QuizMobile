@@ -1,25 +1,41 @@
-package com.example.quizappg.ui.screen
+package com.example.quizapp.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
+import com.example.quizapp.util.Firebase
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Connexion", style = MaterialTheme.typography.headlineMedium)
+        Text("Connexion", style = MaterialTheme.typography.h5)
+        CustomInputField(label = "Email", value = email, onValueChange = { email = it })
+        CustomInputField(label = "Mot de passe", value = password, onValueChange = { password = it }, isPassword = true)
 
-        OutlinedTextField(email, onValueChange = { email = it }, label = { Text("Email") })
-        OutlinedTextField(password, onValueChange = { password = it }, label = { Text("Mot de passe") })
-
-        Button(onClick = { navController.navigate("home") }) {
+        Button(onClick = {
+            Firebase.auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
+                    navController.navigate("home")
+                }
+                .addOnFailureListener {
+                    Toast.makeText(LocalContext.current, it.message!!, Toast.LENGTH_LONG).show()
+                }
+        }) {
             Text("Se connecter")
+        }
+
+        TextButton(onClick = { navController.navigate("register") }) {
+            Text("Pas encore inscrit ? S'inscrire")
         }
     }
 }

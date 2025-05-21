@@ -1,28 +1,56 @@
-package com.example.quizappg.ui.screen
-
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import com.example.quizappg.data.model.Quiz
-import com.example.quizappg.ui.component.QuizCard
-import com.example.quizappg.viewmodel.QuizViewModel
-
 @Composable
-fun HomeScreen(
-    viewModel: QuizViewModel,
-    navController: NavHostController
-) {
-    val quizzes by remember { mutableStateOf(listOf(
-        Quiz(1, "Android Basics", null, ""),
-        Quiz(2, "Kotlin Fundamentals", null, "")
-    )) }
+fun HomeScreen(navController: NavController) {
+    val viewModel: QuizViewModel = viewModel()
+    val quizzes by viewModel.quizzes.collectAsState()
+    val categories by viewModel.categories.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+    val user = Firebase.currentUser
 
-    LazyColumn {
-        items(quizzes) { quiz ->
-            QuizCard(quiz = quiz, navController = navController)
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Text("Bonjour ${user?.displayName ?: "Invité"}")
+
+        var searchTerm by remember { mutableStateOf("") }
+        var selectedCategory by remember { mutableStateOf("Toutes") }
+
+        TextField(
+            value = searchTerm,
+            onValueChange = { searchTerm = it },
+            label = { Text("Rechercher un quiz") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        ExposedDropdownMenuBox(
+            expanded = false,
+            onExpandedChange = {}
+        ) {
+            TextField(
+                value = selectedCategory,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = false) },
+                colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                modifier = Modifier.fillMaxWidth()
+            )
+            ExposedDropdownMenu(
+                expanded = false,
+                onDismissRequest = {}
+            ) {
+                (listOf("Toutes") + categories.map { it.nom }).forEach { item ->
+                    DropdownMenuItem(onClick = { selectedCategory = item }) {
+                        Text(item)
+                    }
+                }
+            }
+        }
+
+        if (loading) {
+            Text("Chargement...")
+        } else {
+            quizzes.forEach { quiz ->
+                QuizCard(quiz = quiz) {
+                    navController.navigate("quiz/${quiz.id}")
+                }
+            }
         }
     }
 }
